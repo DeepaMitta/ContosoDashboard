@@ -5,6 +5,11 @@
 **Status**: Draft  
 **Input**: User description: "Document upload and management feature with per-file access controls, local storage, project integration, search, and sharing." 
 
+## Clarifications
+
+### Session 2026-09-20
+- Q: For offline training, should virus scanning be simulated or integrated with a local/cloud scanner? → A: Simulated scanning for training (Option A). Training will mark uploads as scanned with `ScanResult: "Simulated"` and document that production requires a real scanner integration.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Upload Documents (Priority: P1)
@@ -60,7 +65,7 @@ As a document owner, I want to share a document with specific users or teams and
 ### Functional Requirements
 - **FR-001**: System MUST allow users to upload one or more files (PDF, DOCX, XLSX, PPTX, TXT, JPEG, PNG) with per-file metadata (title required, description optional, category required, associated project optional, tags optional).
 - **FR-002**: System MUST enforce a 25 MB per-file size limit and present clear error messages for over-size or unsupported types.
-- **FR-003**: Files MUST be scanned for viruses/malware before final storage. [NEEDS CLARIFICATION: For offline training, should virus scanning be simulated or integrated with an external scanner?]
+- **FR-003**: Files MUST be scanned for viruses/malware before final storage. For this training implementation scanning will be simulated: uploads will record `Scanned=true` and `ScanResult="Simulated"` in metadata and proceed. Documentation will state that production deployments MUST integrate a real scanner (local like ClamAV or cloud API) and perform real virus/malware checks before finalizing storage.
 - **FR-004**: Files MUST be stored outside `wwwroot` and served via an authorized endpoint; file paths must be GUID-based and unique.
 - **FR-005**: System MUST persist metadata (DocumentId int, Title, Description, Category text, Tags, FilePath, FileType(255), FileSize, UploadedBy, UploadedAt).
 - **FR-006**: Users MUST be able to preview common types (PDF, images) in-browser and download files they are authorized to access.
