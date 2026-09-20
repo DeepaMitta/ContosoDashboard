@@ -1,50 +1,60 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# Sync Impact Report
+<!--
+Version change: unset -> 1.0.0
+Modified principles: (placeholders replaced with concrete principles)
+Added sections: Core Principles, Constraints & Non-Functional Requirements, Development Workflow, Governance
+Removed sections: none
+Follow-up TODOs: RATIFICATION_DATE left as TODO
+-->
+
+# ContosoDashboard Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### 1. Training-First (MANDATORY)
+The repository and its artifacts are intended for training and educational purposes only. All documentation, examples, and code MUST clearly state that this project is not production-ready. Any guidance or code used from this repository in other projects MUST be reviewed and adapted for production standards before deployment.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### 2. Offline-First & Cloud-Ready (REQUIRED)
+The implementation MUST be runnable locally without external cloud dependencies and MUST provide clear abstraction boundaries (interfaces) so that cloud-backed implementations can replace local implementations without changing business logic. Infrastructure adapters (e.g., file storage, database) MUST be isolated behind interfaces.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### 3. Test-First for Learning (STRONGLY RECOMMENDED)
+Tests are core learning artifacts: examples and exercises MUST include automated tests demonstrating expected behavior. Authors SHOULD write tests before implementing example features when feasible to teach test-driven development practices. Critical behaviors showcased in training modules SHOULD have passing, reproducible tests.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### 4. Security-by-Example (REQUIRED)
+Security safeguards presented in this repository are educational examples. Security-relevant code and documentation MUST call out limitations and recommended production practices. Any changes that alter security-related behavior MUST include an explicit rationale and test cases demonstrating the effect.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### 5. Simplicity and Observability (REQUIRED)
+The codebase MUST favor simple, readable implementations that illustrate concepts clearly. Instrumentation and structured logging SHOULD be present in examples to aid debugging and teaching; telemetry or observability integrations included for training MUST be clearly labeled as examples and opt-in.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Constraints & Non-Functional Requirements
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+- Technology stack: ASP.NET Core 8.0, Blazor Server, EF Core. Tooling and examples MUST target the stated stack unless a migration path is documented.
+- No external services: The training implementation MUST avoid external cloud services by default. Any example that integrates external services MUST include a local fallback and clear instructions for production configuration.
+- Data handling: Seed and example data MUST not contain sensitive or real user data. Sample accounts and seed data are mocked for training only.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Development Workflow
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+- Contributions: Amendments to this constitution or training content MUST be submitted as a pull request targeting `.specify/memory/constitution.md` or the relevant doc files.
+- Reviews: Changes that affect learning outcomes, security guidance, or architecture MUST be reviewed by at least one project maintainer and one instructor/owner when available.
+- Testing gates: PRs that modify example behavior or security-relevant code MUST include updated tests and documentation demonstrating the change.
+- Release process: Documentation or sample changes intended for training releases SHOULD include a short changelog entry describing the pedagogical impact.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+Amendments to this constitution are managed via pull requests to `.specify/memory/constitution.md`. Each amendment MUST include:
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+- A description of the change and rationale.
+- A migration or teaching note if the change affects existing exercises or examples.
+- The proposed version bump according to the policy below.
+
+Versioning policy:
+
+- MAJOR: Backward-incompatible governance or principle redefinitions (increments when a principle is removed or materially redefined).
+- MINOR: Addition of a new principle/section or material expansion of an existing principle.
+- PATCH: Clarifications, wording fixes, or non-substantive refinements.
+
+Compliance review expectations:
+
+- Maintaining authors MUST ensure that training modules referencing this constitution remain accurate. Significant deviations discovered during course delivery MUST be corrected with an accompanying amendment PR.
+
+**Version**: 1.0.0 | **Ratified**: TODO(RATIFICATION_DATE): original ratification date unknown | **Last Amended**: 2026-09-20
