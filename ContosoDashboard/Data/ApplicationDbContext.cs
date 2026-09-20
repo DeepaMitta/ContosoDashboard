@@ -17,6 +17,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Notification> Notifications { get; set; } = null!;
     public DbSet<ProjectMember> ProjectMembers { get; set; } = null!;
     public DbSet<Announcement> Announcements { get; set; } = null!;
+    public DbSet<ContosoDashboard.Models.Document> Documents { get; set; } = null!;
+    public DbSet<ContosoDashboard.Models.DocumentShare> DocumentShares { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -59,6 +61,12 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Notification>()
             .HasIndex(n => new { n.UserId, n.IsRead });
+
+        modelBuilder.Entity<ContosoDashboard.Models.Document>()
+            .HasIndex(d => d.UploadedByUserId);
+
+        modelBuilder.Entity<ContosoDashboard.Models.Document>()
+            .HasIndex(d => d.ProjectId);
 
         modelBuilder.Entity<User>()
             .HasIndex(u => u.Email)
