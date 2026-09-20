@@ -109,6 +109,31 @@ ios/ or android/
 
 This keeps changes localized to the existing project layout and avoids introducing separate backend/frontend repos.
 
+## Background Processing & Virus Scanning (Production Migration)
+
+Although the training implementation simulates scanning, production deployments SHOULD offload scanning to an asynchronous background job. Recommended production pattern:
+
+- Upload flow (web app):
+  1. Validate upload and persist file to the chosen storage (local path for training, blob storage for production).
+  2. Persist metadata to the DB with `Scanned=false` and queue a scan request message containing `DocumentId`, storage key/path, `UploadedBy`, and `UploadedAt` to an Azure Storage Queue.
+  3. Return a 202/201 response to the client and show a pending "scanning" state in the UI until scan completes.
+
+- Azure Functions worker (recommended production):
+  - Trigger: Azure Queue Storage trigger on the scan request queue.
+  - Responsibility: Download the file (from blob storage or accessible storage), execute scanning (anti-malware engine or cloud scanning API), persist the `ScanResult` and `Scanned=true` back to the application (via the application's API or direct DB update), and emit events/notifications for scan failures or suspicious results.
+  - Retry/poison handling: Use standard Azure Functions patterns (exponential backoff, dead-letter queue) for failed scans.
+
+- Security & Architecture notes:
+  - In production with blobs, Azure Function should use managed identity to access blob storage and the application API (avoid embedding secrets).
+  - Ensure the scanning worker has limited privileges and writes only scan results; sensitive file access should be scoped and logged.
+  - Prefer the application API for updating metadata to centralize authorization and business rules.
+
+- Configuration & Feature Flags:
+  - Scanning via Azure Functions should be toggleable via configuration (e.g., `UseAsyncScanning=true/false`) so training remains offline-first by default.
+  - Provide documentation and local emulation guidance (Azurite for queues/blobs) for teams that want to demo the async pipeline locally.
+
+This design decouples scanning from the upload request, improves responsiveness for users, and scales scanning independently from the web application.
+
 ## Complexity Tracking
 
 > **Fill ONLY if Constitution Check has violations that must be justified**
